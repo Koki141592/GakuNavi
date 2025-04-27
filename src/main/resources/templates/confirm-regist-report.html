@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>授業レポート確認画面</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	
+	<h2>授業レポート確認</h2>
+	
+	<table class="confirm-table" th:object="${reportRegistForm}">
+		<tr>
+			<td class="guide">【生徒ID】</td>
+			<td th:text="${reportRegistForm.studentId + ' ' + reportRegistForm.studentName}"></td>
+		</tr>
+		<tr>
+			<td class="guide">【教科名】</td>
+			<td th:text="*{subject}"></td>
+		</tr>
+		<tr>
+			<td class="guide">【分野】</td>
+			<td th:text="*{field}"></td>
+		</tr>
+		<tr>
+			<td class="guide">【日付】</td>
+			<td th:text="*{date}"></td>
+		</tr>
+		<tr>
+			<td class="guide">【理解度】(1-5)</td>
+			<td th:text="*{rating}"></td>
+		</tr>
+		<tr>
+			<td class="guide">【一言コメント】</td>
+			<td th:text="*{comment}"></td>
+		</tr>
+	</table>
+	
+	<form th:action="@{/confirm-regist-report}" method="POST"
+		  th:object="${reportRegistForm}">
+		<input type="hidden" th:field="*{studentId}">
+		<input type="hidden" th:field="*{subject}">
+		<input type="hidden" th:field="*{field}">
+		<input type="hidden" th:field="*{date}">
+		<input type="hidden" th:field="*{rating}">
+		<input type="hidden" th:field="*{comment}">
+		<input type="submit" value="登録実行" class="btn">
+	</form>
+
+	<form th:action="@{/show-report-form-ret}" method="POST"
+		  th:object="${reportRegistForm}">
+		<input type="hidden" th:field="*{studentId}">
+		<input type="hidden" th:field="*{studentName}">
+		<input type="hidden" th:field="*{subject}">
+		<input type="hidden" th:field="*{field}">
+		<input type="hidden" th:field="*{date}">
+		<input type="hidden" th:field="*{rating}">
+		<input type="hidden" th:field="*{comment}">
+		<input type="submit" value="もどる" class="btn">
+	</form>
+
+</body>
+</html>

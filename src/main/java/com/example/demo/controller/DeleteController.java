@@ -1,0 +1,60 @@
+package com.example.demo.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.example.demo.entity.Report;
+import com.example.demo.form.ReportDeleteForm;
+import com.example.demo.service.DeleteService;
+
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequiredArgsConstructor
+public class DeleteController {
+	
+	private final DeleteService service;
+	
+	@PostMapping("/delete-report")
+	public String deleteReport(
+			@Validated @ModelAttribute ReportDeleteForm form,
+			BindingResult result) {
+		
+		if(result.hasErrors()) {
+			
+			throw new IllegalArgumentException("**deleteReport()**");
+		}
+		
+		return "confirm-delete-report";
+	}
+	
+	@PostMapping("/confirm-delete-report")
+	public String confirmDeleteReport(
+			@Validated @ModelAttribute ReportDeleteForm form,
+			BindingResult result,
+			RedirectAttributes redirectAttributes) {
+		
+		if(result.hasErrors()) {
+			throw new IllegalArgumentException("**confirmDeleteReport()**");
+		}  
+		
+		Report report = new Report();
+		report.setReportId(form.getReportId());
+		report.setStudentId(form.getStudentId());
+		report.setSubject(form.getSubject());
+		report.setField(form.getField());
+		report.setDate(form.getDate());
+		report.setRating(form.getRating());
+		report.setComment(form.getComment());
+		
+		service.delete(report);
+		
+		redirectAttributes.addFlashAttribute("msg", "レポート削除" );
+		
+		return "redirect:/complete";
+	}
+}

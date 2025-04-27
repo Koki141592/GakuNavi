@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>生徒一覧</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<h2>生徒検索</h2>
+<form th:action="@{/student-search}" method="POST" th:object="${studentSearchForm}">
+	【生徒名】（部分一致）<br>
+   	<input type="text" th:field="*{studentName}"><br>
+	<br>
+   	<input type="submit" value="検索" class="btn">
+</form>
+
+<div th:if="${studentList} != null">
+	<h2>生徒一覧</h2>
+
+	<table class="student-list">
+		<tr>
+			<th colspan="2">レポート</th><th>生徒ID</th><th>生徒名</th><th>学校名</th><th>学年</th>
+		</tr>
+
+		<tr th:each="student : ${studentList}">
+			<td>
+				<form th:action="@{/search-report}" method="POST">
+					<input type="hidden" name="studentId" th:value="${student.studentId}">
+					<input type="hidden" name="studentName" th:value="${student.studentName}">
+					<input type="submit" value="一覧" class="tbtn">
+				</form>
+			</td>
+			<td>
+				<form th:action="@{/show-report-form}" method="POST">
+					<input type="hidden" name="studentId" th:value="${student.studentId}">
+					<input type="hidden" name="studentName" th:value="${student.studentName}">
+					<input type="submit" value="登録" class="tbtn">
+				</form>
+			</td>
+			<td th:text="${student.studentId}"></td>
+			<td th:text="${student.studentName}"></td>
+			<td th:text="${student.schoolName}"></td>
+			<td th:text="${student.grade}"></td>
+		</tr>
+
+	</table>
+
+</div>
+
+</body>
+</html>

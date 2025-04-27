@@ -1,0 +1,67 @@
+ <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>レポート一覧</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<h2>レポート一覧</h2>
+	
+	<div th:object="${reportSearchForm}">
+		【生徒】<br>
+		<p th:text = "${reportSearchForm.studentId + ' ' + reportSearchForm.studentName}"></p>
+	</div>
+	
+	<br>
+	<div th:if="${reportList} == null">
+		（レポートが存在しません）
+	</div>
+	<div th:if="${reportList} != null">
+		<table class="report-list">
+			<tr>
+				<th colspan="2">レポート</th><th>ID</th><th>生徒ID</th><th>教科名</th><th>分野</th><th>日付</th><th>理解度</th><th>一言コメント</th>
+			</tr>
+			
+			<tr th:each="report : ${reportList}">
+				<td>
+					<form th:action="@{/show-edit-form}" method="POST">
+						<input type="hidden" name="reportId" th:value="${report.reportId}">
+						<input type="hidden" name="studentId" th:value="${reportSearchForm.studentId}">
+						<input type="hidden" name="studentName" th:value="${reportSearchForm.studentName}">
+						<input type="hidden" name="subject" th:value="${report.subject}">
+						<input type="hidden" name="field" th:value="${report.field}">
+						<input type="hidden" name="date" th:value="${report.date}">		
+						<input type="hidden" name="rating" th:value="${report.rating}">
+						<input type="hidden" name="comment" th:value="${report.comment}">
+						<input type="submit" value="編集" class="tbtn">
+					</form>
+				<td>
+					<form th:action="@{/delete-report}" method="POST">
+						<input type="hidden" name="reportId" th:value="${report.reportId}">
+						<input type="hidden" name="studentId" th:value="${reportSearchForm.studentId}">
+						<input type="hidden" name="studentName" th:value="${reportSearchForm.studentName}">
+						<input type="hidden" name="subject" th:value="${report.subject}">
+						<input type="hidden" name="field" th:value="${report.field}">
+						<input type="hidden" name="date" th:value="${report.date}">		
+						<input type="hidden" name="rating" th:value="${report.rating}">
+						<input type="hidden" name="comment" th:value="${report.comment}">
+						<input type="submit" value="削除" class="tbtn">
+					</form>
+				</td>
+				<td th:text="${report.reportId}"></td>
+				<td th:text="${report.studentId}"></td>
+				<td th:text="${report.subject}"></td>
+				<td th:text="${report.field}"></td>
+				<td th:text="${report.date}"></td>
+				<td th:text="${report.rating}"></td>
+				<td th:text="${report.comment}"></td>
+			</tr>
+		</table>
+	</div>
+	
+	<br>
+	<a th:href="@{/top-page}">トップページに戻る</a>
+
+</body>
+</html>

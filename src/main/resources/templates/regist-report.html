@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>授業レポート登録</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<h2>授業レポート登録</h2>
+	
+	<form th:action="@{/regist-report}" method="POST"
+	        th:object="${reportRegistForm}">
+		【生徒ID】<br>
+		<p th:text="*{studentId} + ' ' + *{studentName}"></p> 
+		<input type="hidden" th:field="*{studentId}">
+		<input type="hidden" th:field="*{studentName}">
+		<div th:if="${#fields.hasErrors('studentId')}" th:errors="*{studentId}" class="error-msg"></div>
+		<br>
+		【教科名】<br>
+		<input type="text" th:field="*{subject}"><br>
+		<div th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}" class="error-msg"></div>
+		<br>
+		【分野】<br>
+		<input type="text" th:field="*{field}"><br>
+		<div th:if="${#fields.hasErrors('field')}" th:errors="*{field}" class="error-msg"></div>
+		<br>
+		【日付】<br>
+		<input type="date" th:field="*{date}"><br>
+		<div th:if="${#fields.hasErrors('date')}" th:errors="*{date}" class="error-msg"></div>
+		<br>
+		【理解度】(1-5)<br>
+		<select th:field="*{rating}">
+			<option value="0">選択してください</option>
+			<option th:each="option : ${#numbers.sequence(1, 5)}"
+			    th:value="${option}"
+				th:text="${option}"
+				th:selected="${option == rating}">
+			</option>
+		</select>
+		<br>
+		<div th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}" class="error-msg"></div>
+		<br>
+		【一言コメント】<br>
+		<input type="text" th:field="*{comment}" class="comment"><br>
+		<div th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}" class="error-msg"></div>
+		<br>
+		<input type="submit" value="登録" class="btn">
+	</form>
+	
+	<br>
+	<a th:href="@{/top-page}">トップページに戻る</a>
+</body>
+</html>
