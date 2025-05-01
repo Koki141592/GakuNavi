@@ -20,7 +20,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 	@Override
 	public List<Student> selectByNameWildcard(String studentName) {
 		
-		//SQL文
+		//
 		String sql = """
 			    SELECT
 			        st.student_id,

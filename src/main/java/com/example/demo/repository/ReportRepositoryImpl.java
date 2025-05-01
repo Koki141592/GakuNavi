@@ -21,14 +21,14 @@ public class ReportRepositoryImpl implements ReportRepository {
 	@Override
 	public void add(Report report) {
 		
-		//データベースに登録するためのSQL文
+		//レポートテーブルに新規登録する
 		String sql = """
 			    INSERT INTO t_report
 			    (student_id, subject, field, class_date, rating, comment)
 			    VALUES (?, ?, ?, ?, ?, ?)
 			    """;
 		
-		//上記で記述したSQL文に取得した値を入れる
+		//プレースホルダにレポート情報をセットしてSQLを実行
 		jdbcTemplate.update(sql, report.getStudentId(),
 				                 report.getSubject(),
 				                 report.getField(),
@@ -40,6 +40,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 	@Override
 	public List<Report> selectByStudentId(int studentId) {
 		
+		 //指定されたstudent_idに紐づく成績情報を取得するSQL
 		String sql = """
 			    SELECT
 			        report_id,
@@ -58,7 +59,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 			        report_id ASC
 			    """;
 		
-		//SQLで検索して、プレースホルダに受け取ったstudentIdを入れる処理
+		//SQLで検索して、結果をListで取得
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, studentId);
 		
 		List<Report> result = new ArrayList<Report>();
@@ -67,7 +68,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 			
 			Report report = new Report();
 			
-			//各値を取得する処理
+			//各値をDTOに入れる処理
 			report.setReportId((int)one.get("report_id"));
 			report.setStudentId((int)one.get("student_id"));
 			report.setSubject((String)one.get("subject"));
@@ -86,6 +87,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 	@Override
 	public void update(Report report) {
 		
+		//指定されたreport_idのレポートを更新するSQL
 		String sql = """
 			    UPDATE t_report
 			    SET
@@ -98,6 +100,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 			      report_id = ?
 			    """;
 		
+		//プレースホルダに値をセットしてSQL文を実行する処理
 		jdbcTemplate.update(sql,
 				report.getSubject(),
 				report.getField(),
@@ -106,12 +109,12 @@ public class ReportRepositoryImpl implements ReportRepository {
 				report.getComment(),
 				report.getReportId()
 				);
-		
 	}
 
 	@Override
 	public void delete(Report report) {
 		
+		//指定されたIDのレポートを削除するSQL
 		String sql = """
 				DELETE
 				FROM
@@ -119,7 +122,8 @@ public class ReportRepositoryImpl implements ReportRepository {
 				WHERE
 				    report_id = ?
 				""";
-				
+		
+		//削除するSQLを実行する
 		jdbcTemplate.update(sql, report.getReportId());
 	}
 

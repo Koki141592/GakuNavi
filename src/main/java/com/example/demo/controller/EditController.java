@@ -54,6 +54,7 @@ public class EditController {
 			return "edit-report";
 		}
 		
+		//フォームからDTOに値を格納する処理
 		Report report = new Report();
 		report.setReportId(form.getReportId());
 		report.setStudentId(form.getStudentId());
