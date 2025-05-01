@@ -60,6 +60,7 @@ public class RegistController {
 			return "regist-report";
 		}
 		
+		//フォームからDTOに値を格納する処理
 		Report report = new Report();
 		report.setStudentId(form.getStudentId());
 		report.setSubject(form.getSubject());
